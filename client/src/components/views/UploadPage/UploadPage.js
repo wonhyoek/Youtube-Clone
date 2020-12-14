@@ -22,7 +22,9 @@ export default () => {
     const [privacy, setPrivacy] = useState(0)
     const [Categories, setCategories] = useState("Film & Animation")
 
-    const [FilePath, setFilePath] = useState("")
+    const [FilePath, setFilePath] = useState("");
+    const [ThumbnailPath, setThumbnailPath] = useState("");
+    const [FileDuration, setFileDuration] = useState("");
 
     const handleChangeTitle = ( event ) => {
         setTitle(event.currentTarget.value)
@@ -60,7 +62,15 @@ export default () => {
                 }
                 setFilePath(response.data.filePath)
 
-                //gerenate thumbnail with this filepath ! 
+                axios.post('/api/video/thumbnail', variable)
+                .then(response => {
+                    if(response.data.success){
+                        setFileDuration(response.data.fileDuration);
+                        setThumbnailPath(response.data.thumbsFilePath);
+                    } else {
+                        alert('Failed create Thumbnail')
+                    }
+                })
 
             } else {
                 alert('failed to save the video in server')
@@ -89,11 +99,11 @@ export default () => {
                         </div>
                     )}
                 </Dropzone>
-                {/* {thumbnail !== "" &&
+                {ThumbnailPath &&
                     <div>
-                        <img src={`http://localhost:5000/${thumbnail}`} alt="haha" />
+                        <img src={`http://localhost:5000/${ThumbnailPath}`} alt="haha" />
                     </div>
-                } */}
+                }
             </div>
             <br /><br />
             <label>Title</label>
