@@ -2,6 +2,8 @@ import React, { useState, useEffect} from 'react'
 import { Typography, Button, Form, message, Input, Icon } from 'antd';
 import Dropzone from 'react-dropzone';
 import axios from 'axios';
+import { useSelector } from "react-redux";
+import { useHistory } from "react-router-dom";
 
 const { Title } = Typography;
 const { TextArea } = Input;
@@ -17,6 +19,9 @@ const Catogory = [
     { value: 0, label: "Sports" },
 ]
 export default () => {
+    const user = useSelector(state => state.user);
+    const history = useHistory();
+
     const [title, setTitle] = useState("");
     const [Description, setDescription] = useState("");
     const [privacy, setPrivacy] = useState(0)
@@ -39,9 +44,7 @@ export default () => {
     const handleChangeTwo = (event) => {
         setCategories(event.currentTarget.value)
     }
-    const onSubmit = () => {
 
-    }
 
     const onDrop = ( files ) => {
 
@@ -76,6 +79,43 @@ export default () => {
                 alert('failed to save the video in server')
             }
         })
+
+    }
+
+    const onSubmit = (event) => {
+
+        event.preventDefault();
+
+        if (user.userData && !user.userData.isAuth) {
+            return alert('Please Log in First')
+        }
+
+        if (title === "" || Description === "" ||
+            Categories === "" || FilePath === "" ||
+            FileDuration === "" || ThumbnailPath === "") {
+            return alert('Please first fill all the fields')
+        }
+
+        const variables = {
+            writer: user.userData._id,
+            title: title,
+            description: Description,
+            privacy: privacy,
+            filePath: FilePath,
+            category: Categories,
+            duration: FileDuration,
+            thumbnail: ThumbnailPath
+        }
+
+        axios.post('/api/video/uploadVideo', variables)
+            .then(response => {
+                if (response.data.success) {
+                    alert('video Uploaded Successfully')
+                    history.push('/')
+                } else {
+                    alert('Failed to upload video')
+                }
+            })
 
     }
 
