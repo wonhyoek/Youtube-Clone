@@ -11,6 +11,11 @@ export default (props) => {
     const videoId = props.match.params.videoId;
     const [Video, setVideo] = useState([]);
     const user = useSelector(state => state.user);
+    const [CommentLists, setCommentLists] = useState([]);
+
+    const updateComment =  (newComment) => {
+        setCommentLists(CommentLists.concat(newComment))
+    }
 
     const videoVariable = {
         videoId: videoId
@@ -26,6 +31,15 @@ export default (props) => {
                 alert('Failed to get video Info')
             }
         })
+        axios.post('/api/comment/getComments', videoVariable)
+            .then(response => {
+                if (response.data.success) {
+                    console.log('response.data.comments',response.data.comments)
+                    setCommentLists(response.data.comments)
+                } else {
+                    alert('Failed to get video Info')
+                }
+            })
     }, [])
 
     if(Video.writer){
@@ -46,7 +60,7 @@ export default (props) => {
                         <div></div>
                     </List.Item>
 
-                    <Comment/>
+                    <Comment CommentLists={CommentLists} videoId={Video._id}  refreshFunction={updateComment} />
 
                 </div>
             </Col>

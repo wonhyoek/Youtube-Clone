@@ -7,7 +7,7 @@ import moment from "moment";
 const {Title} = Typography;
 const {Meta} = Card;
 
-function LandingPage() {
+export default () => {
 
     useEffect(() => {
         axios.get('/api/video/getVideos')
@@ -21,6 +21,7 @@ function LandingPage() {
     }, []);
 
     const [Videos, setVideos] = useState([]);
+
 
 
     const renderVideos = Videos && Videos.map((video, index) => {
@@ -71,4 +72,3 @@ function LandingPage() {
     )
 }
 
-export default LandingPage
