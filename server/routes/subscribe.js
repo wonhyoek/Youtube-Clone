@@ -2,7 +2,7 @@ const express = require('express');
 const router = express.Router();
 
 
-const { Subscriber } = require("../models/Subscribe");
+const Subscriber = require("../models/Subscribe");
 
 const { auth } = require("../middleware/auth");
 
