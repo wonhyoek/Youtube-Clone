@@ -1,12 +1,15 @@
 import React, { useEffect, useState } from 'react'
 import { List, Avatar, Typography, Row, Col } from 'antd';
 import axios from 'axios';
+import { useSelector } from "react-redux";
 import SideVideo from "./Section/SideVideo";
+import Subscribe from "./Section/Subscribe";
 
 export default (props) => {
 
     const videoId = props.match.params.videoId;
     const [Video, setVideo] = useState([]);
+    const user = useSelector(state => state.user);
 
     const videoVariable = {
         videoId: videoId
@@ -32,7 +35,7 @@ export default (props) => {
                     <video style={{ width: '100%' }} src={`http://localhost:5000/${Video.filePath}`} controls></video>
 
                     <List.Item
-                        actions={[]}
+                        actions={[<Subscribe userTo = {Video.writer._id} userFrom = {user._id} />]}
                     >
                         <List.Item.Meta
                             avatar={<Avatar src={Video.writer && Video.writer.image} />}
