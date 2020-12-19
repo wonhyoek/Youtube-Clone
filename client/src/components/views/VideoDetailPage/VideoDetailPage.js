@@ -4,6 +4,7 @@ import axios from 'axios';
 import { useSelector } from "react-redux";
 import SideVideo from "./Section/SideVideo";
 import Subscribe from "./Section/Subscribe";
+import Comment from "./Section/Comment";
 
 export default (props) => {
 
@@ -44,6 +45,8 @@ export default (props) => {
                         />
                         <div></div>
                     </List.Item>
+
+                    <Comment/>
 
                 </div>
             </Col>
