@@ -5,6 +5,7 @@ import { useSelector } from "react-redux";
 import SideVideo from "./Section/SideVideo";
 import Subscribe from "./Section/Subscribe";
 import Comment from "./Section/Comment";
+import LikeDislike from './Section/LikeDislike';
 
 export default (props) => {
 
@@ -50,7 +51,8 @@ export default (props) => {
                     <video style={{ width: '100%' }} src={`http://localhost:5000/${Video.filePath}`} controls></video>
 
                     <List.Item
-                        actions={[<Subscribe userTo = {Video.writer._id} userFrom = {user.userData._id} />]}
+                        actions={[<LikeDislike video videoId={videoId} userId={localStorage.getItem('userId')}/>, 
+                        <Subscribe userTo = {Video.writer._id} userFrom = {user.userData._id} />]}
                     >
                         <List.Item.Meta
                             avatar={<Avatar src={Video.writer && Video.writer.image} />}
